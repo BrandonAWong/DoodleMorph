@@ -11,6 +11,11 @@ const routes = [
     name: 'Editor',
     component: () => import('@/views/Editor.vue'),
   },
+  {
+    path: '/gallery',
+    name: 'Gallery',
+    component: () => import('@/views/Gallery.vue'),
+  },
 ];
 
 const router = createRouter({

@@ -2,7 +2,7 @@
 
 @plugin "daisyui/theme" {
   name: 'pastel';
-  default: false;
+  default: true;
   prefersdark: false;
   color-scheme: 'light';
   --color-base-100: oklch(100% 0 0);
@@ -25,9 +25,9 @@
   --color-warning-content: oklch(55% 0.195 38.402);
   --color-error: oklch(80% 0.114 19.571);
   --color-error-content: oklch(50% 0.213 27.518);
-  --radius-selector: 0rem;
-  --radius-field: 0rem;
-  --radius-box: 0rem;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.5rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 2px;
@@ -41,8 +41,20 @@
 
 @import './reset.css';
 
+@font-face {
+  font-family: Notebook;
+  src: url('@/assets/fonts/Notebook.otf') format('opentype');
+}
+
 @utility font-rock {
   font-family: 'Rock 3D', sans-serif;
   font-weight: 400;
   font-style: normal;
+}
+
+@utility font-notebook {
+  font-family: Notebook;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: 7%;
 }
