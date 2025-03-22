@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref, useTemplateRef } from 'vue';
+import { onMounted, ref, useTemplateRef, watch } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   width: number;
   height: number;
+  strokeStyle: string;
+  lineWidth: number;
 }>();
+
+const model = defineModel<string | undefined>({ required: true });
 
 const canvas = useTemplateRef('myCanvas');
 
@@ -36,10 +40,22 @@ function initCtx() {
 
   canvas.value.addEventListener('mouseup', async () => {
     isDrawing.value = false;
-    const image = canvas.value?.toDataURL();
-    console.log(image);
+    model.value = canvas.value?.toDataURL();
   });
 }
+
+watch(
+  props,
+  ({ strokeStyle, lineWidth }) => {
+    if (!ctx) {
+      return;
+    }
+
+    ctx.strokeStyle = strokeStyle;
+    ctx.lineWidth = lineWidth;
+  },
+  { immediate: true },
+);
 
 onMounted(() => {
   initCtx();

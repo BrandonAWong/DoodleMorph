@@ -1,5 +1,4 @@
-<!-- eslint-disable vue/block-lang -->
-<script setup lang="js">
+<script setup lang="ts">
 import { log } from '@/assets/utility';
 import { computed, defineAsyncComponent } from 'vue';
 
