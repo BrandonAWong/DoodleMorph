@@ -1,3 +1,4 @@
+import '@fontsource/rock-3d';
 import './assets/main.css';
 
 import { createApp } from 'vue';
