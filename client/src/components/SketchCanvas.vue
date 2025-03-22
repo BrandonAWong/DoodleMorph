@@ -19,10 +19,6 @@ function initCtx() {
 
   ctx = canvas.value.getContext('2d');
 
-  ctx?.strokeStyle = 'blue';
-  ctx?.lineWidth = 3;
-  ctx?.lineCap = 'round';
-
   canvas.value.addEventListener('mousedown', (e) => {
     isDrawing.value = true;
     ctx?.beginPath();
