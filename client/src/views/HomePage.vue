@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import editorIcon from '@/assets/playButton.png';
 import bgImage from '@/assets/background.png';
 import galleryIcon from '@/assets/galleryButton.png';

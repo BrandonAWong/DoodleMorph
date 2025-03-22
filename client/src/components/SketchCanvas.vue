@@ -14,19 +14,28 @@ const canvas = useTemplateRef('myCanvas');
 
 const isDrawing = ref(false);
 
-let ctx: CanvasRenderingContext2D | null = null;
+const ctxRef = ref<CanvasRenderingContext2D | null>(null);
 
 function initCtx() {
   if (!canvas.value) {
     return;
   }
 
-  ctx = canvas.value.getContext('2d');
+  ctxRef.value = canvas.value.getContext('2d');
+
+  if (!ctxRef.value) {
+    return;
+  }
+
+  ctxRef.value.strokeStyle = props.strokeStyle;
+  ctxRef.value.lineWidth = props.lineWidth;
+  ctxRef.value.fillStyle = 'white';
+  ctxRef.value.fillRect(0, 0, props.width, props.height);
 
   canvas.value.addEventListener('mousedown', (e) => {
     isDrawing.value = true;
-    ctx?.beginPath();
-    ctx?.moveTo(e.offsetX, e.offsetY);
+    ctxRef.value?.beginPath();
+    ctxRef.value?.moveTo(e.offsetX, e.offsetY);
   });
 
   canvas.value.addEventListener('mousemove', (e) => {
@@ -34,8 +43,8 @@ function initCtx() {
       return;
     }
 
-    ctx?.lineTo(e.offsetX, e.offsetY);
-    ctx?.stroke();
+    ctxRef.value?.lineTo(e.offsetX, e.offsetY);
+    ctxRef.value?.stroke();
   });
 
   canvas.value.addEventListener('mouseup', async () => {
@@ -45,20 +54,23 @@ function initCtx() {
 }
 
 watch(
-  props,
-  ({ strokeStyle, lineWidth }) => {
-    if (!ctx) {
+  () => [props.strokeStyle, props.lineWidth],
+  () => {
+    if (!ctxRef.value) {
       return;
     }
 
-    ctx.strokeStyle = strokeStyle;
-    ctx.lineWidth = lineWidth;
+    ctxRef.value.strokeStyle = props.strokeStyle;
+    ctxRef.value.lineWidth = props.lineWidth;
   },
-  { immediate: true },
 );
 
 onMounted(() => {
   initCtx();
+});
+
+defineExpose({
+  ctxRef,
 });
 </script>
 
