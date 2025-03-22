@@ -9,15 +9,25 @@ from transformers import AutoModelForCausalLM, AutoProcessor
 from dotenv import load_dotenv 
 from os import getenv
 from threading import Lock
+from image import db, Image
+import base64
+
+
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///images.db"
 queue_lock = Lock()
-
+db.init_app(app)
+with app.app_context():
+    db.create_all()
 load_dotenv()
 login(token=getenv("TOKEN"))
 
-@app.route("/image", methods=["GET"])
+@app.route("/image", methods=["POST"])
 def generate_image():
+    data = request.get_json()
+    doodle = data.get("doodle")
+    style = data.get("style")
     with queue_lock:
         image_path = "test11.png"
         prompt = describe_image(image_path) + ", detailed, 4k, colorful, complex background, realistic"
@@ -43,6 +53,10 @@ def generate_image():
         filename = f"./static/{datetime.now()}.png"
         result.images[0].save(filename)
         torch.cuda.empty_cache()
+        generated = base64.b64encode(result.images[0]).decode('utf-8')
+        new_image = Image(doodle=doodle, generated=generated, creationdate=datetime.now())
+        db.session.add(new_image)
+        db.session.commit()
         return f'<img src="{filename}">'
 
 def describe_image(image_path):
