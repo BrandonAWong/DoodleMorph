@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SketchCanvas from '@/components/SketchCanvas.vue';
 import SmartSvg from '@/components/smart/SmartSvg.vue';
+import bgImage from '@/assets/bgImage.png';
 import { ref, useTemplateRef } from 'vue';
 
 const WIDTH = 1080;
@@ -12,6 +13,16 @@ const lineWidth = ref(5);
 const imageSrc = ref('');
 const theme = ref('Realistic');
 
+/**
+ * POST doodle and style to server, and set imageSrc to the response.
+ *
+ * @remarks
+ * This function is used to generate an image based on the doodle and style.
+ * The doodle is the base64 representation of the canvas.
+ * The style is the theme selected by the user.
+ * The response from the server is in JSON format, and the image is stored in the
+ * `image` property of the response.
+ */
 async function generateImage() {
   const res = await fetch('http://45.49.181.126:6521/image', {
     method: 'POST',
@@ -29,6 +40,13 @@ async function generateImage() {
   imageSrc.value = data.image;
 }
 
+/**
+ * Clears the entire canvas.
+ *
+ * @remarks
+ * This function checks if the canvas context is available and clears the 
+ * entire canvas area using clearRect with the specified width and height.
+ */
 function clearCanvas() {
   if (!refMyCanvas.value?.ctxRef) {
     return;
@@ -39,8 +57,12 @@ function clearCanvas() {
 </script>
 
 <template>
-  <main class="font-notebook py-10 text-3xl">
-    <h1 class="font-rock text-primary pb-20 text-center text-8xl font-bold">Doodle Morph</h1>
+     <!-- <div class="flex h-screen flex-col items-center justify-center bg-[#E5E6F3] bg-cover bg-center"
+     :style="{ backgroundImage: `url(${bgImage})` }"></div> -->
+     
+  <main class="font-notebook py-10 text-3xl bg-[#E5E6F3] bg-cover"
+    :style="{ backgroundImage: `url(${bgImage})` }">
+    <h1 class="font-rock pb-20 text-center text-8xl font-bold text-[#394DA8]">Doodle Morph</h1>
     <div class="mx-auto flex max-w-[1080px] justify-between">
       <div class="flex items-center">
         <SmartSvg src="pencil" class="h-14 w-14 cursor-pointer" />
