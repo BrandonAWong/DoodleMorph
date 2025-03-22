@@ -104,6 +104,17 @@ def describe_image(image_path):
         .replace("drawing", "picture")\
         .replace("black and white", "")\
         .replace("the image shows", "")
+@app.route("/image", methods=["GET"])
+def get_gallery_images():
+    data = request.get_json()
+    limit = data.get("limit")
+    offset = data.get("offset")
+    images = Image.query.offset(offset).limit(limit).all()
+    images_list = [] 
+    for image in images:
+        info = {"id": image.id, "doodle":image.doodle, "generated":image.generated, "creationdate":image.creationdate}
+        images_list.append(info)
+    return images_list
 
 
 if __name__ == "__main__":
