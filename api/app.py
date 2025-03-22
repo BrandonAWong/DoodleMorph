@@ -106,9 +106,8 @@ def describe_image(image_path):
         .replace("the image shows", "")
 @app.route("/image", methods=["GET"])
 def get_gallery_images():
-    data = request.get_json()
-    limit = data.get("limit")
-    offset = data.get("offset")
+    offset = request.args.get('offset',0,type=int)
+    limit = request.args.get('limit',5,type=int)
     images = Image.query.offset(offset).limit(limit).all()
     images_list = [] 
     for image in images:
