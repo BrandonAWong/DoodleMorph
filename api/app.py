@@ -1,9 +1,9 @@
 import torch
 from diffusers import StableDiffusionImg2ImgPipeline
-from PIL import Image
+import PIL
 from datetime import datetime
 from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from huggingface_hub import login
 from transformers import AutoModelForCausalLM, AutoProcessor
 from dotenv import load_dotenv 
@@ -11,29 +11,44 @@ from os import getenv
 from threading import Lock
 from image import db, Image
 import base64
-
+from io import BytesIO
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///images.db"
-queue_lock = Lock()
+CORS(app)
+
 db.init_app(app)
 with app.app_context():
     db.create_all()
+
 load_dotenv()
 login(token=getenv("TOKEN"))
+
+queue_lock = Lock()
 
 @app.route("/image", methods=["POST"])
 def generate_image():
     data = request.get_json()
-    doodle = data.get("doodle")
+    doodle_base64 = data.get("doodle")
+    doodle = BytesIO(base64.b64decode(doodle_base64.replace("data:image/png;base64,", "")))
     style = data.get("style")
+
     with queue_lock:
-        image_path = "test11.png"
-        prompt = describe_image(image_path) + ", detailed, 4k, colorful, complex background, realistic"
+        prompt = describe_image(doodle) + ", detailed, 4k, colorful, complex background, "
+
+        match (style.lower()):
+            case "realistic":
+                prompt += "realistic"
+            case "pixelated":
+                prompt += "pixelated, pixel art"
+            case "cartoonish":
+                prompt += "cartoonish, cartoony"
+            case "anime":
+                prompt += "anime"
+
         negative_prompt = "art, painting, drawing, artistry, render, nsfw, drawn, black and white, explicit"
-        print(prompt)
-        init_img = Image.open(image_path).convert("RGB")
+        init_img = PIL.Image.open(doodle).convert("RGB")
         init_img = init_img.resize((768, 512))  # Adjust size as needed
 
         pipe = StableDiffusionImg2ImgPipeline.from_pretrained("SimianLuo/LCM_Dreamshaper_v7", torch_dtype=torch.float32)
@@ -47,17 +62,21 @@ def generate_image():
                       negative_prompt=negative_prompt,
                       image=init_img,
                       num_inference_steps=50,
-                      strength=0.50,  # How much to transform the image (0-1)
+                      strength=0.6,  # How much to transform the image (0-1)
                       guidance_scale=4.0)  # How closely to follow the prompt
 
-        filename = f"./static/{datetime.now()}.png"
-        result.images[0].save(filename)
         torch.cuda.empty_cache()
-        generated = base64.b64encode(result.images[0]).decode('utf-8')
-        new_image = Image(doodle=doodle, generated=generated, creationdate=datetime.now())
+
+        buffered = BytesIO()
+        result.images[0].save(buffered, format="PNG")  # Save as PNG or any other format
+        img_bytes = buffered.getvalue()
+        generated = "data:image/png;base64," + base64.b64encode(img_bytes).decode('utf-8') 
+
+        new_image = Image(doodle=doodle_base64, generated=generated, creationdate=datetime.now())
         db.session.add(new_image)
         db.session.commit()
-        return f'<img src="{filename}">'
+        print(prompt)
+        return jsonify({"image": generated})
 
 def describe_image(image_path):
     model_id = "microsoft/Florence-2-base"
@@ -67,7 +86,7 @@ def describe_image(image_path):
     model = model.to("cuda")
     processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
 
-    image = Image.open(image_path).convert("RGB")
+    image = PIL.Image.open(image_path).convert("RGB")
     inputs = processor(text=prompt, images=image, return_tensors="pt").to("cuda", torch.float32)
 
     generated_ids = model.generate(
