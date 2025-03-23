@@ -2,7 +2,10 @@
 import { floodFill, hexToRGBA } from '@/assets/utility/bucket';
 import SketchCanvas from '@/components/SketchCanvas.vue';
 import SmartSvg from '@/components/smart/SmartSvg.vue';
-import { computed, inject, ref, useTemplateRef } from 'vue';
+import { computed, inject, ref, useTemplateRef, onMounted } from 'vue';
+
+const bgMusic = ref<HTMLAudioElement | null>(null);
+const hasPlayedMusic = ref(false);
 
 const WIDTH = 1080;
 const HEIGHT = 720;
@@ -29,6 +32,36 @@ const strokeStyle = computed(() => {
 
   return color.value;
 });
+
+onMounted(() => {
+  const audio = bgMusic.value;
+  if (audio) {
+    audio.volume = 0.5;
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        console.warn('Autoplay blocked. Will require user interaction.', err);
+      });
+    }
+  }
+});
+
+function playMusic() {
+  const audio = bgMusic.value;
+  if (!audio) return;
+
+  audio.volume = 0.1;
+
+  audio
+    .play()
+    .then(() => {
+      hasPlayedMusic.value = true;
+    })
+    .catch((err) => {
+      console.warn('Audio play failed:', err);
+    });
+}
 
 /**
  * POST doodle and style to server, and set imageSrc to the response.
@@ -144,6 +177,8 @@ function handleCanvasClick(x: number, y: number) {
     class="font-notebook bg-[#ffffff] bg-cover py-10 text-3xl"
     :style="{ backgroundImage: 'url(/images/background.png)' }"
   >
+    <audio ref="bgMusic" src="public/audio/theme.mp3" preload="auto" loop></audio>
+
     <div class="pb-20 text-center">
       <RouterLink to="/" class="font-rock text-8xl font-bold text-[#394DA8] tracking-tighter">
         Doodle Morph
@@ -219,7 +254,7 @@ function handleCanvasClick(x: number, y: number) {
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <select v-model="theme" class="select select-lg border-[#394DA8] bg-white">
+        <select v-model="theme" class="select select-lg border-[#394DA8] bg-white text-[#394DA8]">
           <option disabled selected>Pick a color</option>
           <option>Realistic</option>
           <option>Pixelated</option>
@@ -249,11 +284,11 @@ function handleCanvasClick(x: number, y: number) {
     <div class="mx-auto flex max-w-[1080px] justify-between py-2">
       <div class="flex items-center gap-2">
         <button
-          class="btn btn-lg btn-secondary border-[#394DA8] bg-white hover:bg-accent px-10 text-[#394DA8]"
+          class="btn btn-lg btn-secondary hover:bg-[#E5E6F3] border-[#394DA8] bg-white px-10 text-[#394DA8]"
           type="button"
           @click="clearCanvas"
         >
-          clear
+          Clear
         </button>
         <SmartSvg
           src="undo-left"
@@ -267,14 +302,20 @@ function handleCanvasClick(x: number, y: number) {
           :class="{ 'btn-disabled': redoHistory.length === 0 }"
           @click="redo"
         />
+        <div class="my-4 flex justify-center" v-if="!hasPlayedMusic">
+          <button 
+            @click="playMusic"
+            class="btn btn-lg btn-primary hover:bg-[#E5E6F3] border-[#394DA8] bg-white px-10 text-[#394DA8]"
+            type="button">Play Music</button>
+        </div>
       </div>
       <div>
         <button
-          class="btn btn-lg btn-primary border-[#394DA8] bg-white hover:bg-accent px-10 text-[#394DA8]"
+          class="btn btn-lg btn-primary hover:bg-[#E5E6F3] border-[#394DA8] bg-white px-10 text-[#394DA8]"
           type="button"
           @click="generateImage"
         >
-          generate
+          Generate
         </button>
       </div>
     </div>
@@ -282,6 +323,7 @@ function handleCanvasClick(x: number, y: number) {
       <img :src="imageSrc" />
     </div>
   </main>
+<<<<<<< Updated upstream
 </template>
 
 <style>
@@ -289,3 +331,6 @@ a {
   word-spacing: -40px;
 }
 </style>
+=======
+</template>
+>>>>>>> Stashed changes
