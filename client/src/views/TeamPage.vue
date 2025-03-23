@@ -7,8 +7,18 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
     class="bg-[#E5E6F3] bg-cover bg-center"
     :style="{ backgroundImage: 'url(/images/background.png)' }"
   >
-  <div class="flex -translate-y-30 transform items-center justify-center text-8xl mb-0">
-        <div class="font-rock h-[200px] w-[800px] shrink-0 pt-35 pl-35 mb-0 font-bold text-[#394DA8] tracking-tighter short-spaces">
+
+  <div class="absolute top-6 left-6">
+      <RouterLink to="/">
+        <SmartSvg
+          src="undo-left"
+          class="h-16 w-16 shrink-0 opacity-100 transition duration-200 hover:opacity-80"
+        />
+      </RouterLink>
+  </div>
+
+  <div class="flex -translate-y-30 text-8xl mb-0">
+        <div class="font-rock h-[200px] w-[100%] shrink-0 pt-35 text-center font-bold text-[#394DA8] tracking-tighter short-spaces">
           Our Team
         </div>
   </div>
@@ -19,8 +29,8 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
       <div class="relative -top-5 w-[228px] h-[52px] rounded-[18px] border-[#394DA8] border-5 bg-white">
         Brandon Wong
       </div>
-      <SmartSvg
-          src="brandon"
+      <img
+          src="/src/assets/brandon.png"
           class="relative zh-[212px] w-[212px] overflow-visible"
       />
       <div class="relative top-5 left-3 w-[367px] h-[118px] text-left rounded-[18px] border-[#394DA8] border-5 bg-white">
@@ -32,8 +42,8 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
       <div class="relative -top-5 w-[228px] h-[52px] rounded-[18px] border-[#394DA8] border-5 bg-white">
         Kaveh Zare
       </div>
-      <SmartSvg
-          src="kaveh"
+      <img
+          src="/src/assets/kaveh.png"
           class="relative zh-[212px] w-[212px] overflow-visible"
         />
       <div class="relative top-5 left-3 w-[367px] h-[118px] text-left rounded-[18px] border-[#394DA8] border-5 bg-white">
@@ -48,8 +58,8 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
   <div class="relative -top-5 w-[228px] h-[52px] rounded-[18px] border-[#394DA8] border-5 bg-white">
     Sophia Doan
   </div>
-  <SmartSvg
-      src="sophia"
+  <img
+      src="/src/assets/sophia.png"
       class="relative zh-[212px] w-[212px] overflow-visible"
     />
   <div class="relative top-5 left-3 w-[367px] h-[118px] text-left rounded-[18px] border-[#394DA8] border-5 bg-white">
@@ -61,8 +71,8 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
   <div class="relative -top-5 w-[228px] h-[52px] rounded-[18px] border-[#394DA8] border-5 bg-white">
     Carlos Aguilera
   </div>
-  <SmartSvg
-      src="carlos"
+  <img
+      src="/src/assets/carlos.png"
       class="relative zh-[212px] w-[212px] overflow-visible"
     />
   <div class="relative top-5 left-3 w-[367px] h-[118px] text-left rounded-[18px] border-[#394DA8] border-5 bg-white">
