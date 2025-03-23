@@ -27,8 +27,8 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
       class="flex h-screen flex-col items-center justify-center bg-[#E5E6F3] bg-cover bg-center"
       :style="{ backgroundImage: 'url(/images/background.png)' }"
     >
-      <div class="flex -translate-y-30 transform items-center justify-center text-9xl">
-        <div class="font-rock h-[404px] w-[703px] shrink-0 p-35 font-bold text-[#394DA8]">
+      <div class="flex -translate-y-30 transform text-9xl">
+        <div class="font-rock h-[404px] w-[703px] shrink-0 pt-35 font-bold text-[#394DA8] text-center">
           Doodle Morph
         </div>
       </div>
