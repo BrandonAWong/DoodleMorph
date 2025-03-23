@@ -345,8 +345,11 @@ function handleCanvasClick(x: number, y: number) {
         </button>
       </div>
     </div>
-    <div class="flex justify-center py-10">
-      <img :src="imageSrc" />
+    <div
+      v-if="imageSrc"
+      class="mx-auto my-10 flex max-w-[1080px] justify-center rounded border-6 border-[#394DA8]"
+    >
+      <img :src="imageSrc" width="1080" height="720" />
     </div>
   </main>
 </template>
