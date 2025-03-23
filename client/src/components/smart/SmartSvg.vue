@@ -14,6 +14,7 @@ const props = defineProps({
 const derivedComponent = computed(() => {
   try {
     const component = SVGS[`/src/assets/svgs/${props.src}.svg`]();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     return defineAsyncComponent(() => component);
   } catch {
