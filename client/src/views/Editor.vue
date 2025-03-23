@@ -114,6 +114,7 @@ function redo() {
     ctx.putImageData(nextState, 0, 0);
   }
 }
+
 </script>
 
 <template>
@@ -219,6 +220,7 @@ function redo() {
         :height="HEIGHT"
         :stroke-style="color"
         :line-width="lineWidth"
+        :mode="mode"
       />
     </div>
 
