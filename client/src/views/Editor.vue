@@ -41,27 +41,36 @@ async function generateImage() {
 }
 
 /**
- * Clears the entire canvas.
+ * Clears the entire canvas by resetting it to a blank white state.
  *
  * @remarks
- * This function checks if the canvas context is available and clears the 
- * entire canvas area using clearRect with the specified width and height.
+ * This function accesses the 2D rendering context of the canvas and performs
+ * a clear operation over the entire area specified by WIDTH and HEIGHT.
+ * It then fills the canvas with a white rectangle to ensure a clean slate
+ * for further drawing operations.
+ *
+ * @function clearCanvas
  */
 function clearCanvas() {
-  if (!refMyCanvas.value?.ctxRef) {
-    return;
-  }
+  const context = refMyCanvas.value?.ctxRef;
 
-  refMyCanvas.value?.ctxRef.clearRect(0, 0, WIDTH, HEIGHT);
+  if (!context) return;
+  // Clear the canvas
+  context.clearRect(0, 0, WIDTH, HEIGHT);
+  // Fill canvas with white
+  context.fillStyle = 'white';
+  context.fillRect(0, 0, WIDTH, HEIGHT);
 }
 </script>
 
 <template>
-     <!-- <div class="flex h-screen flex-col items-center justify-center bg-[#E5E6F3] bg-cover bg-center"
+  <!-- <div class="flex h-screen flex-col items-center justify-center bg-[#E5E6F3] bg-cover bg-center"
      :style="{ backgroundImage: `url(${bgImage})` }"></div> -->
-     
-  <main class="font-notebook py-10 text-3xl bg-[#E5E6F3] bg-cover"
-    :style="{ backgroundImage: `url(${bgImage})` }">
+
+  <main
+    class="font-notebook bg-[#E5E6F3] bg-cover py-10 text-3xl"
+    :style="{ backgroundImage: `url(${bgImage})` }"
+  >
     <h1 class="font-rock pb-20 text-center text-8xl font-bold text-[#394DA8]">Doodle Morph</h1>
     <div class="mx-auto flex max-w-[1080px] justify-between">
       <div class="flex items-center">
@@ -122,15 +131,23 @@ function clearCanvas() {
 
     <div class="mx-auto flex max-w-[1080px] justify-between py-2">
       <div class="flex items-center gap-2">
-        <button class="btn btn-lg btn-secondary px-10" type="button" @click="clearCanvas">
-          CLEAR
+        <button
+          class="btn btn-lg btn-secondary border-[#394DA8] bg-[#E5E6F3] px-10 text-[#394DA8]"
+          type="button"
+          @click="clearCanvas"
+        >
+          clear
         </button>
         <SmartSvg src="undo-left" class="btn btn-lg" />
         <SmartSvg src="undo-right" class="btn btn-lg" />
       </div>
       <div>
-        <button class="btn btn-lg btn-primary px-10" type="button" @click="generateImage">
-          GENERATE
+        <button
+          class="btn btn-lg btn-primary border-[#394DA8] bg-[#E5E6F3] px-10 text-[#394DA8]"
+          type="button"
+          @click="generateImage"
+        >
+          generate
         </button>
       </div>
     </div>

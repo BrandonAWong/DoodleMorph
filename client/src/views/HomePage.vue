@@ -23,7 +23,7 @@ import galleryIcon from '@/assets/galleryIcon.png';
       :style="{ backgroundImage: `url(${bgImage})` }"
     >
       <div class="flex -translate-y-30 transform items-center justify-center text-9xl">
-        <div class="font-rock h-[404px] w-[703px] shrink-0 p-35 font-bold text-[#394DA8]">
+        <div class="font-rock h-[404px] w-[703px] shrink-0 p-35 font-bold text-[#394DA8]"">
           Doodle Morph
         </div>
       </div>
