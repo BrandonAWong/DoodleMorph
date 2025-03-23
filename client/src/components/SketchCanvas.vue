@@ -6,7 +6,6 @@ const props = defineProps<{
   height: number;
   strokeStyle: string;
   lineWidth: number;
-  mode: string;
 }>();
 
 const model = defineModel<string | undefined>('image', { required: true });
@@ -45,11 +44,7 @@ function initCtx() {
 
     if (!ctxRef.value) return;
 
-    if (props.mode == 'Erase') {
-      ctxRef.value.strokeStyle = 'white';
-    } else {
-      ctxRef.value.strokeStyle = props.strokeStyle;
-    }
+    ctxRef.value.strokeStyle = props.strokeStyle;
     ctxRef.value?.lineTo(e.offsetX, e.offsetY);
     ctxRef.value?.stroke();
   });
@@ -63,17 +58,12 @@ function initCtx() {
 }
 
 watch(
-  () => [props.strokeStyle, props.lineWidth, props.mode],
+  () => [props.strokeStyle, props.lineWidth],
   () => {
     if (!ctxRef.value) return;
 
     ctxRef.value.lineWidth = props.lineWidth;
-    
-    if (props.mode == 'Erase') {
-      ctxRef.value.strokeStyle = 'white';
-    } else {
-      ctxRef.value.strokeStyle = props.strokeStyle;
-    }
+    ctxRef.value.strokeStyle = props.strokeStyle;
   },
 );
 

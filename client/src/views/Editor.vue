@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SketchCanvas from '@/components/SketchCanvas.vue';
 import SmartSvg from '@/components/smart/SmartSvg.vue';
-import { inject, ref, useTemplateRef } from 'vue';
+import { computed, inject, ref, useTemplateRef } from 'vue';
 
 const WIDTH = 1080;
 const HEIGHT = 720;
@@ -20,6 +20,14 @@ const mode = ref('Draw');
 
 const startOverlay = inject('start-overlay', () => {});
 const stopOverlay = inject('stop-overlay', () => {});
+
+const strokeStyle = computed(() => {
+  if (mode.value == 'Erase') {
+    return 'white';
+  }
+
+  return color.value;
+});
 
 /**
  * POST doodle and style to server, and set imageSrc to the response.
@@ -114,7 +122,6 @@ function redo() {
     ctx.putImageData(nextState, 0, 0);
   }
 }
-
 </script>
 
 <template>
@@ -218,9 +225,8 @@ function redo() {
         class="rounded border-6"
         :width="WIDTH"
         :height="HEIGHT"
-        :stroke-style="color"
+        :stroke-style="strokeStyle"
         :line-width="lineWidth"
-        :mode="mode"
       />
     </div>
 
