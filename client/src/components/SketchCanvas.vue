@@ -91,6 +91,7 @@ onMounted(() => {
 });
 
 defineExpose({
+  canvas,
   ctxRef,
 });
 </script>

@@ -86,11 +86,13 @@ async function generateImage() {
   try {
     startOverlay();
 
+    const latestBase64 = refMyCanvas.value?.canvas?.toDataURL();
+
     const res = await fetch('http://45.49.181.126:6521/image', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        doodle: base64.value,
+        doodle: latestBase64,
         style: theme.value,
       }),
     });
@@ -311,22 +313,22 @@ function handleCanvasClick(x: number, y: number) {
           :class="{ 'btn-disabled': redoHistory.length === 0 }"
           @click="redo"
         />
-          <button
-            v-if="!hasPlayedMusic"
-            @click="playMusic"
-            class="btn btn-lg btn-primary border-[#394DA8] bg-white px-10 text-[#394DA8] hover:bg-[#E5E6F3]"
-            type="button"
-          >
-            ▶️ Lower Sound
-          </button>
-          <button
-            v-else
-            @click="stopMusic"
-            class="btn btn-lg btn-error border-[#394DA8] bg-white px-10 text-[#394DA8] hover:bg-[#E5E6F3]"
-            type="button"
-          >
-            ⏹️ Stop Music
-          </button>
+        <button
+          v-if="!hasPlayedMusic"
+          @click="playMusic"
+          class="btn btn-lg btn-primary border-[#394DA8] bg-white px-10 text-[#394DA8] hover:bg-[#E5E6F3]"
+          type="button"
+        >
+          ▶️ Lower Sound
+        </button>
+        <button
+          v-else
+          @click="stopMusic"
+          class="btn btn-lg btn-error border-[#394DA8] bg-white px-10 text-[#394DA8] hover:bg-[#E5E6F3]"
+          type="button"
+        >
+          ⏹️ Stop Music
+        </button>
       </div>
       <div>
         <button
@@ -349,9 +351,8 @@ a {
   word-spacing: -40px;
 }
 .font-notebook:not(.font-notebook:not(.font-rock)) {
-  text-shadow: 1px 1px 0px black, -1px -1px 0px black;
+  text-shadow:
+    1px 1px 0px black,
+    -1px -1px 0px black;
 }
-
 </style>
-
-
