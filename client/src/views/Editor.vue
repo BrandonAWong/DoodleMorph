@@ -196,18 +196,14 @@ function redo() {
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <div class="dropdown dropdown-end">
-          <div tabindex="0" role="button" class="btn btn-lg px-8 text-3xl">{{ theme }}</div>
-          <ul
-            tabindex="0"
-            class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 text-3xl shadow-sm"
-          >
-            <li><button type="button" @click="theme = 'Realistic'">Realistic</button></li>
-            <li><button type="button" @click="theme = 'Pixelated'">Pixelated</button></li>
-            <li><button type="button" @click="theme = 'Cartoon'">Cartoon</button></li>
-            <li><button type="button" @click="theme = 'Anime'">Anime</button></li>
-          </ul>
-        </div>
+        <select v-model="theme" class="select select-lg border-[#394DA8] bg-[#E5E6F3]">
+          <option disabled selected>Pick a color</option>
+          <option>Realistic</option>
+          <option>Pixelated</option>
+          <option>Cartoon</option>
+          <option>Anime</option>
+        </select>
+
         <RouterLink to="/gallery">
           <SmartSvg src="gallery" class="h-14 w-14" />
         </RouterLink>
