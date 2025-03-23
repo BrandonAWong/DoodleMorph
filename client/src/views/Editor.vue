@@ -47,7 +47,6 @@ onMounted(() => {
   }
 });
 
-
 function playMusic() {
   const audio = bgMusic.value;
   if (!audio) return;
@@ -72,7 +71,6 @@ function stopMusic() {
   audio.currentTime = 0;
   hasPlayedMusic.value = false;
 }
-
 
 /**
  * POST doodle and style to server, and set imageSrc to the response.
@@ -191,7 +189,7 @@ function handleCanvasClick(x: number, y: number) {
     <audio ref="bgMusic" src="/audio/theme.mp3" preload="auto" loop></audio>
 
     <div class="pb-20 text-center">
-      <RouterLink to="/" class="font-rock text-8xl font-bold text-[#394DA8] tracking-tighter">
+      <RouterLink to="/" class="font-rock text-8xl font-bold tracking-tighter text-[#394DA8]">
         Doodle Morph
       </RouterLink>
     </div>
@@ -295,7 +293,7 @@ function handleCanvasClick(x: number, y: number) {
     <div class="mx-auto flex max-w-[1080px] justify-between py-2">
       <div class="flex items-center gap-2">
         <button
-          class="btn btn-lg btn-secondary hover:bg-[#E5E6F3] border-[#394DA8] bg-white px-10 text-[#394DA8]"
+          class="btn btn-lg btn-secondary border-[#394DA8] bg-white px-10 text-[#394DA8] hover:bg-[#E5E6F3]"
           type="button"
           @click="clearCanvas"
         >
@@ -314,28 +312,27 @@ function handleCanvasClick(x: number, y: number) {
           @click="redo"
         />
         <div class="my-4 flex justify-center">
-          <button 
+          <button
             v-if="!hasPlayedMusic"
             @click="playMusic"
-            class="btn btn-lg btn-primary hover:bg-[#E5E6F3] border-[#394DA8] bg-white px-10 text-[#394DA8]"
+            class="btn btn-lg btn-primary border-[#394DA8] bg-white px-10 text-[#394DA8] hover:bg-[#E5E6F3]"
             type="button"
           >
-            ▶️ Play Music
+            ▶️ Lower Sound
           </button>
-          <button 
+          <button
             v-else
             @click="stopMusic"
-            class="btn btn-lg btn-error hover:bg-[#E5E6F3] border-[#394DA8] bg-white px-10 text-[#394DA8]"
+            class="btn btn-lg btn-error border-[#394DA8] bg-white px-10 text-[#394DA8] hover:bg-[#E5E6F3]"
             type="button"
           >
             ⏹️ Stop Music
           </button>
         </div>
-
       </div>
       <div>
         <button
-          class="btn btn-lg btn-primary hover:bg-[#E5E6F3] border-[#394DA8] bg-white px-10 text-[#394DA8]"
+          class="btn btn-lg btn-primary border-[#394DA8] bg-white px-10 text-[#394DA8] hover:bg-[#E5E6F3]"
           type="button"
           @click="generateImage"
         >
