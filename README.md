@@ -10,8 +10,8 @@ Draw something cool and watch it morph into something amazing!
 - Diffusers
 
 ## Models
-LCM_Dreamshaper_v7
-Florence-2
+- LCM_Dreamshaper_v7
+- Florence-2
 
 ## Tools
 - Figma
