@@ -200,7 +200,7 @@ function handleCanvasClick(x: number, y: number) {
       <div class="flex items-center">
         <SmartSvg
           src="pencil"
-          class="cursor-pointer"
+          class="h-15 w-15 cursor-pointer"
           :class="{
             '-translate-y-2 transition-all': mode === 'Draw',
           }"
