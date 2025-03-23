@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { floodFill, hexToRGBA } from '@/assets/utility/bucket';
 import SketchCanvas from '@/components/SketchCanvas.vue';
 import SmartSvg from '@/components/smart/SmartSvg.vue';
 import { computed, inject, ref, useTemplateRef } from 'vue';
@@ -122,6 +123,20 @@ function redo() {
     ctx.putImageData(nextState, 0, 0);
   }
 }
+
+function handleCanvasClick(x: number, y: number) {
+  const ctx = refMyCanvas.value?.ctxRef;
+
+  if (!ctx) {
+    return;
+  }
+
+  const fillColor = hexToRGBA(color.value);
+
+  if (mode.value === 'Bucket') {
+    floodFill(ctx, fillColor, x, y);
+  }
+}
 </script>
 
 <template>
@@ -227,6 +242,7 @@ function redo() {
         :height="HEIGHT"
         :stroke-style="strokeStyle"
         :line-width="lineWidth"
+        @click="handleCanvasClick"
       />
     </div>
 

@@ -8,6 +8,8 @@ const props = defineProps<{
   lineWidth: number;
 }>();
 
+const emit = defineEmits(['click']);
+
 const model = defineModel<string | undefined>('image', { required: true });
 const state = defineModel<(ImageData | undefined)[]>('state', { default: () => [] });
 
@@ -35,32 +37,49 @@ function initCtx() {
 
   canvas.value.addEventListener('mousedown', (e) => {
     isDrawing.value = true;
+
     ctxRef.value?.beginPath();
     ctxRef.value?.moveTo(e.offsetX, e.offsetY);
   });
 
   canvas.value.addEventListener('mousemove', (e) => {
-    if (!isDrawing.value) return;
+    if (!isDrawing.value) {
+      return;
+    }
 
-    if (!ctxRef.value) return;
+    if (!ctxRef.value) {
+      return;
+    }
 
     ctxRef.value.strokeStyle = props.strokeStyle;
     ctxRef.value?.lineTo(e.offsetX, e.offsetY);
     ctxRef.value?.stroke();
   });
 
-  canvas.value.addEventListener('mouseup', async () => {
+  canvas.value.addEventListener('mouseup', () => {
     isDrawing.value = false;
     model.value = canvas.value?.toDataURL();
     const binImage = ctxRef.value?.getImageData(0, 0, props.width, props.height);
     state.value.push(binImage);
+  });
+
+  canvas.value.addEventListener('click', async (event: MouseEvent) => {
+    if (canvas.value) {
+      const rect = canvas.value.getBoundingClientRect();
+      const x = Math.floor(event.clientX - rect.left);
+      const y = Math.floor(event.clientY - rect.top);
+
+      emit('click', x, y);
+    }
   });
 }
 
 watch(
   () => [props.strokeStyle, props.lineWidth],
   () => {
-    if (!ctxRef.value) return;
+    if (!ctxRef.value) {
+      return;
+    }
 
     ctxRef.value.lineWidth = props.lineWidth;
     ctxRef.value.strokeStyle = props.strokeStyle;
