@@ -4,9 +4,10 @@ import PIL
 from datetime import datetime
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from sqlalchemy import desc
 from huggingface_hub import login
 from transformers import AutoModelForCausalLM, AutoProcessor
-from dotenv import load_dotenv 
+from dotenv import load_dotenv
 from os import getenv
 from threading import Lock
 from image import db, Image
@@ -35,16 +36,20 @@ def generate_image():
     style = data.get("style")
 
     with queue_lock:
-        prompt = describe_image(doodle) + ", detailed, 4k, colorful, complex background, "
-
+        prompt = describe_image(doodle) + ", detailed, 4k, complex background, "
+        strength = 0.5
+        guidance = 4
         match (style.lower()):
             case "realistic":
                 prompt += "realistic"
+                strength = 0.60
+                guidance = 7
             case "pixelated":
                 prompt += "pixelated, pixel art"
             case "cartoonish":
                 prompt += "cartoonish, cartoony"
             case "anime":
+                strength = 0.60
                 prompt += "anime"
 
         negative_prompt = "art, painting, drawing, artistry, render, nsfw, drawn, black and white, explicit"
@@ -53,24 +58,21 @@ def generate_image():
 
         pipe = StableDiffusionImg2ImgPipeline.from_pretrained("SimianLuo/LCM_Dreamshaper_v7", torch_dtype=torch.float32)
         pipe = pipe.to("cuda")
-
-        # if reailstic, up the strength to 60-65ish range and guidance to 7.5
-        # if wana match the drawing. 50 is perfect and guidance to 4
-        # pixelated ^
+        pipe.safety_checker = None
 
         result = pipe(prompt=prompt,
                       negative_prompt=negative_prompt,
                       image=init_img,
                       num_inference_steps=50,
-                      strength=0.6,  # How much to transform the image (0-1)
-                      guidance_scale=4.0)  # How closely to follow the prompt
+                      strength=strength,
+                      guidance_scale=guidance)
 
         torch.cuda.empty_cache()
 
         buffered = BytesIO()
         result.images[0].save(buffered, format="PNG")  # Save as PNG or any other format
         img_bytes = buffered.getvalue()
-        generated = "data:image/png;base64," + base64.b64encode(img_bytes).decode('utf-8') 
+        generated = "data:image/png;base64," + base64.b64encode(img_bytes).decode('utf-8')
 
         new_image = Image(doodle=doodle_base64, generated=generated, creationdate=datetime.now())
         db.session.add(new_image)
@@ -85,7 +87,6 @@ def describe_image(image_path):
     model = AutoModelForCausalLM.from_pretrained(model_id, trust_remote_code=True)
     model = model.to("cuda")
     processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
-
     image = PIL.Image.open(image_path).convert("RGB")
     inputs = processor(text=prompt, images=image, return_tensors="pt").to("cuda", torch.float32)
 
@@ -103,17 +104,21 @@ def describe_image(image_path):
     return parsed_answer[prompt].lower()\
         .replace("drawing", "picture")\
         .replace("black and white", "")\
-        .replace("the image shows", "")
+        .replace("the image shows", "")\
+        .replace("how to", "")\
+        .replace("draw", "")\
+        .replace(".", "")
+
 @app.route("/image", methods=["GET"])
 def get_gallery_images():
     offset = request.args.get('offset',0,type=int)
     limit = request.args.get('limit',5,type=int)
-    images = Image.query.offset(offset).limit(limit).all()
-    images_list = [] 
+    images = Image.query.order_by(desc(Image.creationdate)).offset(offset).limit(limit).all()
+    images_list = []
     for image in images:
         info = {"id": image.id, "doodle":image.doodle, "generated":image.generated, "creationdate":image.creationdate}
         images_list.append(info)
-    return images_list
+    return jsonify({"images": images_list})
 
 
 if __name__ == "__main__":
