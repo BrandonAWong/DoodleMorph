@@ -141,11 +141,11 @@ function handleCanvasClick(x: number, y: number) {
 
 <template>
   <main
-    class="font-notebook bg-[#E5E6F3] bg-cover py-10 text-3xl"
+    class="font-notebook bg-[#ffffff] bg-cover py-10 text-3xl"
     :style="{ backgroundImage: 'url(/images/background.png)' }"
   >
     <div class="pb-20 text-center">
-      <RouterLink to="/" class="font-rock text-8xl font-bold text-[#394DA8]">
+      <RouterLink to="/" class="font-rock text-8xl font-bold text-[#394DA8] tracking-tighter">
         Doodle Morph
       </RouterLink>
     </div>
@@ -219,7 +219,7 @@ function handleCanvasClick(x: number, y: number) {
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <select v-model="theme" class="select select-lg border-[#394DA8] bg-[#E5E6F3]">
+        <select v-model="theme" class="select select-lg border-[#394DA8] bg-[#ffffff]">
           <option disabled selected>Pick a color</option>
           <option>Realistic</option>
           <option>Pixelated</option>
@@ -283,3 +283,9 @@ function handleCanvasClick(x: number, y: number) {
     </div>
   </main>
 </template>
+
+<style>
+a {
+  word-spacing: -40px;
+}
+</style>

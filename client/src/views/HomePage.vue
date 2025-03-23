@@ -13,6 +13,14 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
         />
       </RouterLink>
     </div>
+    <div class="absolute top-4 left-4">
+      <RouterLink to="/team">
+        <SmartSvg
+          src="info"
+          class=" shrink-0 opacity-100 transition duration-200 hover:opacity-80"
+        />
+      </RouterLink>
+    </div>
 
     <!-- This is for the home page title -->
     <div
