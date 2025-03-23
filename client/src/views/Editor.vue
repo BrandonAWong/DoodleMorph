@@ -12,6 +12,7 @@ const lineWidth = ref(5);
 const imageSrc = ref('');
 const theme = ref('Realistic');
 const color = ref('#000000');
+const mode = ref('Draw');
 
 const startOverlay = inject('start-overlay', () => {});
 const stopOverlay = inject('stop-overlay', () => {});
@@ -85,11 +86,32 @@ function clearCanvas() {
 
     <div class="mx-auto flex max-w-[1080px] justify-between">
       <div class="flex items-center">
-        <SmartSvg src="pencil" class="h-14 w-14 cursor-pointer" />
+        <SmartSvg
+          src="pencil"
+          class="h-14 w-14 cursor-pointer"
+          :class="{
+            '-translate-y-2 transition-all': mode === 'Draw',
+          }"
+          @click="mode = 'Draw'"
+        />
 
-        <SmartSvg src="eraser" class="h-15 w-15 cursor-pointer" />
+        <SmartSvg
+          src="eraser"
+          class="h-15 w-15 cursor-pointer"
+          :class="{
+            '-translate-y-2 transition-all': mode === 'Erase',
+          }"
+          @click="mode = 'Erase'"
+        />
 
-        <SmartSvg src="bucket" class="h-16 w-16 cursor-pointer" />
+        <SmartSvg
+          src="bucket"
+          class="h-16 w-16 cursor-pointer"
+          :class="{
+            '-translate-y-2 transition-all': mode === 'Bucket',
+          }"
+          @click="mode = 'Bucket'"
+        />
 
         <div class="dropdown ms-1">
           <div tabindex="0" role="button" class="cursor-pointer">
@@ -97,7 +119,7 @@ function clearCanvas() {
           </div>
           <ul
             tabindex="0"
-            class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 text-2xl shadow-sm"
+            class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 text-3xl shadow-sm"
           >
             <li><button type="button" @click="lineWidth = 5">Line Width 5px</button></li>
             <li><button type="button" @click="lineWidth = 10">Line Width 10px</button></li>
@@ -135,7 +157,7 @@ function clearCanvas() {
           <div tabindex="0" role="button" class="btn btn-lg px-8 text-3xl">{{ theme }}</div>
           <ul
             tabindex="0"
-            class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 text-2xl shadow-sm"
+            class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 text-3xl shadow-sm"
           >
             <li><button type="button" @click="theme = 'Realistic'">Realistic</button></li>
             <li><button type="button" @click="theme = 'Pixelated'">Pixelated</button></li>
