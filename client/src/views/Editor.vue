@@ -219,7 +219,7 @@ function handleCanvasClick(x: number, y: number) {
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <select v-model="theme" class="select select-lg border-[#394DA8] bg-[#E5E6F3]">
+        <select v-model="theme" class="select select-lg border-[#394DA8] bg-white">
           <option disabled selected>Pick a color</option>
           <option>Realistic</option>
           <option>Pixelated</option>
@@ -249,7 +249,7 @@ function handleCanvasClick(x: number, y: number) {
     <div class="mx-auto flex max-w-[1080px] justify-between py-2">
       <div class="flex items-center gap-2">
         <button
-          class="btn btn-lg btn-secondary border-[#394DA8] bg-[#E5E6F3] px-10 text-[#394DA8]"
+          class="btn btn-lg btn-secondary border-[#394DA8] bg-white hover:bg-accent px-10 text-[#394DA8]"
           type="button"
           @click="clearCanvas"
         >
@@ -270,7 +270,7 @@ function handleCanvasClick(x: number, y: number) {
       </div>
       <div>
         <button
-          class="btn btn-lg btn-primary border-[#394DA8] bg-[#E5E6F3] px-10 text-[#394DA8]"
+          class="btn btn-lg btn-primary border-[#394DA8] bg-white hover:bg-accent px-10 text-[#394DA8]"
           type="button"
           @click="generateImage"
         >
