@@ -174,7 +174,7 @@ function handleCanvasClick(x: number, y: number) {
 
 <template>
   <main
-    class="font-notebook bg-[#E5E6F3] bg-cover py-10 text-3xl"
+    class="font-notebook bg-[#E5E6F3] bg-cover py-10 text-3xl font-black"
     :style="{ backgroundImage: 'url(/images/background.png)' }"
   >
     <audio ref="bgMusic" src="public/audio/theme.mp3" preload="auto" loop></audio>
@@ -189,7 +189,7 @@ function handleCanvasClick(x: number, y: number) {
       <div class="flex items-center">
         <SmartSvg
           src="pencil"
-          class="h-14 w-14 cursor-pointer"
+          class="cursor-pointer"
           :class="{
             '-translate-y-2 transition-all': mode === 'Draw',
           }"
@@ -323,14 +323,16 @@ function handleCanvasClick(x: number, y: number) {
       <img :src="imageSrc" />
     </div>
   </main>
-<<<<<<< Updated upstream
 </template>
 
 <style>
 a {
   word-spacing: -40px;
 }
+.font-notebook:not(.font-notebook:not(.font-rock)) {
+  text-shadow: 1px 1px 0px black, -1px -1px 0px black;
+}
+
 </style>
-=======
-</template>
->>>>>>> Stashed changes
+
+
