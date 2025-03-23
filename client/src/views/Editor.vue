@@ -47,6 +47,7 @@ onMounted(() => {
   }
 });
 
+
 function playMusic() {
   const audio = bgMusic.value;
   if (!audio) return;
@@ -62,6 +63,16 @@ function playMusic() {
       console.warn('Audio play failed:', err);
     });
 }
+
+function stopMusic() {
+  const audio = bgMusic.value;
+  if (!audio) return;
+
+  audio.pause();
+  audio.currentTime = 0;
+  hasPlayedMusic.value = false;
+}
+
 
 /**
  * POST doodle and style to server, and set imageSrc to the response.
@@ -177,7 +188,7 @@ function handleCanvasClick(x: number, y: number) {
     class="font-notebook bg-[#E5E6F3] bg-cover py-10 text-3xl"
     :style="{ backgroundImage: 'url(/images/background.png)' }"
   >
-    <audio ref="bgMusic" src="public/audio/theme.mp3" preload="auto" loop></audio>
+    <audio ref="bgMusic" src="/audio/theme.mp3" preload="auto" loop></audio>
 
     <div class="pb-20 text-center">
       <RouterLink to="/" class="font-rock text-8xl font-bold text-[#394DA8] tracking-tighter">
@@ -302,12 +313,25 @@ function handleCanvasClick(x: number, y: number) {
           :class="{ 'btn-disabled': redoHistory.length === 0 }"
           @click="redo"
         />
-        <div class="my-4 flex justify-center" v-if="!hasPlayedMusic">
+        <div class="my-4 flex justify-center">
           <button 
+            v-if="!hasPlayedMusic"
             @click="playMusic"
             class="btn btn-lg btn-primary hover:bg-[#E5E6F3] border-[#394DA8] bg-white px-10 text-[#394DA8]"
-            type="button">Play Music</button>
+            type="button"
+          >
+            ▶️ Play Music
+          </button>
+          <button 
+            v-else
+            @click="stopMusic"
+            class="btn btn-lg btn-error hover:bg-[#E5E6F3] border-[#394DA8] bg-white px-10 text-[#394DA8]"
+            type="button"
+          >
+            ⏹️ Stop Music
+          </button>
         </div>
+
       </div>
       <div>
         <button
