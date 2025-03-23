@@ -264,7 +264,7 @@ function handleCanvasClick(x: number, y: number) {
       </div>
       <div class="flex items-center gap-2">
         <select v-model="theme" class="select select-lg border-[#394DA8] bg-white text-[#394DA8]">
-          <option disabled selected>Pick a color</option>
+          <option disabled selected>Pick a theme</option>
           <option>Realistic</option>
           <option>Pixelated</option>
           <option>Cartoon</option>
