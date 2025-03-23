@@ -70,14 +70,15 @@ function clearCanvas() {
 </script>
 
 <template>
-  <!-- <div class="flex h-screen flex-col items-center justify-center bg-[#E5E6F3] bg-cover bg-center"
-     :style="{ backgroundImage: `url(${bgImage})` }"></div> -->
-
   <main
     class="font-notebook bg-[#E5E6F3] bg-cover py-10 text-3xl"
     :style="{ backgroundImage: 'url(/images/background.png)' }"
   >
-    <h1 class="font-rock pb-20 text-center text-8xl font-bold text-[#394DA8]">Doodle Morph</h1>
+    <div class="pb-20 text-center">
+      <RouterLink to="/" class="font-rock text-8xl font-bold text-[#394DA8]">
+        Doodle Morph
+      </RouterLink>
+    </div>
     <div class="mx-auto flex max-w-[1080px] justify-between">
       <div class="flex items-center">
         <SmartSvg src="pencil" class="h-14 w-14 cursor-pointer" />
