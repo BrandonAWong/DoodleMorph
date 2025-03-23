@@ -3,13 +3,13 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
 </script>
 
 <template>
-  <main>
+  <main class="relative">
     <!-- This is for the gallery icon in the top right which links to the gallery page. -->
     <div class="absolute top-6 right-6">
       <RouterLink to="/gallery">
         <SmartSvg
           src="gallery"
-          class="shrink-0 opacity-80 transition duration-200 hover:opacity-100"
+          class="h-16 w-16 shrink-0 opacity-100 transition duration-200 hover:opacity-80"
         />
       </RouterLink>
     </div>
@@ -31,7 +31,7 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
           <img
             src="/images/play-icon.png"
             alt="Editor Icon"
-            class="w-176.174px h-174.306px shrink-0 p-20 opacity-80 transition duration-200 hover:opacity-100"
+            class="w-176px h-174px shrink-0 p-20 opacity-100 transition duration-200 hover:opacity-80"
           />
         </RouterLink>
       </div>
