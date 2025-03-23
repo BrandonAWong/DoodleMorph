@@ -11,15 +11,9 @@ provide('stop-overlay', () => (isLoading.value = false));
 
 <template>
   <LoadingOverlay :loading="isLoading" />
-  <RouterView v-slot="{ Component }" class="router-view">
+  <RouterView v-slot="{ Component }">
     <SmartTransition name="fade-up" mode="out-in">
       <component :is="Component" />
     </SmartTransition>
   </RouterView>
 </template>
-
-<style scoped lang="scss">
-.router-view {
-  min-height: calc(100vh - 460px);
-}
-</style>
