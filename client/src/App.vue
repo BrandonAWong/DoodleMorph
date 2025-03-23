@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { provide, ref } from 'vue';
 import SmartTransition from '@/components/smart/SmartTransition.vue';
+import LoadingOverlay from './components/LoadingOverlay.vue';
 
 const isLoading = ref(false);
 
@@ -9,6 +10,7 @@ provide('stop-overlay', () => (isLoading.value = false));
 </script>
 
 <template>
+  <LoadingOverlay :loading="isLoading" />
   <RouterView v-slot="{ Component }" class="router-view">
     <SmartTransition name="fade-up" mode="out-in" :duration="500">
       <component :is="Component" />

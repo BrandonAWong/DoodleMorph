@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import SketchCanvas from '@/components/SketchCanvas.vue';
 import SmartSvg from '@/components/smart/SmartSvg.vue';
-import bgImage from '@/assets/bgImage.png';
-import { ref, useTemplateRef } from 'vue';
+import { inject, ref, useTemplateRef } from 'vue';
 
 const WIDTH = 1080;
 const HEIGHT = 720;
@@ -12,6 +11,9 @@ const base64 = ref('');
 const lineWidth = ref(5);
 const imageSrc = ref('');
 const theme = ref('Realistic');
+
+const startOverlay = inject('start-overlay', () => {});
+const stopOverlay = inject('stop-overlay', () => {});
 
 /**
  * POST doodle and style to server, and set imageSrc to the response.
@@ -24,6 +26,8 @@ const theme = ref('Realistic');
  * `image` property of the response.
  */
 async function generateImage() {
+  startOverlay();
+
   const res = await fetch('http://45.49.181.126:6521/image', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -38,6 +42,8 @@ async function generateImage() {
   const data = await res.json();
 
   imageSrc.value = data.image;
+
+  stopOverlay();
 }
 
 /**
@@ -69,7 +75,7 @@ function clearCanvas() {
 
   <main
     class="font-notebook bg-[#E5E6F3] bg-cover py-10 text-3xl"
-    :style="{ backgroundImage: `url(${bgImage})` }"
+    :style="{ backgroundImage: 'url(/images/background.png)' }"
   >
     <h1 class="font-rock pb-20 text-center text-8xl font-bold text-[#394DA8]">Doodle Morph</h1>
     <div class="mx-auto flex max-w-[1080px] justify-between">
