@@ -47,7 +47,7 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
           class="relative zh-[212px] w-[212px] overflow-visible"
         />
       <div class="relative top-5 left-3 w-[367px] h-[118px] text-left rounded-[18px] border-[#394DA8] border-5 bg-white">
-        <p class="ml-3">dicsord mod</p>
+        <p class="ml-3">discord mod</p>
       </div>
     </div>
   </div>
