@@ -291,7 +291,7 @@ function handleCanvasClick(x: number, y: number) {
     </div>
 
     <div class="mx-auto flex max-w-[1080px] justify-between py-2">
-      <div class="flex items-center gap-2">
+      <div class="flex items-start gap-2">
         <button
           class="btn btn-lg btn-secondary border-[#394DA8] bg-white px-10 text-[#394DA8] hover:bg-[#E5E6F3]"
           type="button"
@@ -311,7 +311,6 @@ function handleCanvasClick(x: number, y: number) {
           :class="{ 'btn-disabled': redoHistory.length === 0 }"
           @click="redo"
         />
-        <div class="my-4 flex justify-center">
           <button
             v-if="!hasPlayedMusic"
             @click="playMusic"
@@ -328,7 +327,6 @@ function handleCanvasClick(x: number, y: number) {
           >
             ⏹️ Stop Music
           </button>
-        </div>
       </div>
       <div>
         <button
