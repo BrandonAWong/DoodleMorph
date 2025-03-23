@@ -8,7 +8,8 @@ const props = defineProps<{
   lineWidth: number;
 }>();
 
-const model = defineModel<string | undefined>({ required: true });
+const model = defineModel<string | undefined>('image', { required: true });
+const state = defineModel<(ImageData | undefined)[]>('state', { default: () => [] });
 
 const canvas = useTemplateRef('myCanvas');
 
@@ -21,7 +22,7 @@ function initCtx() {
     return;
   }
 
-  ctxRef.value = canvas.value.getContext('2d');
+  ctxRef.value = canvas.value.getContext('2d', { willReadFrequently: true });
 
   if (!ctxRef.value) {
     return;
@@ -50,6 +51,8 @@ function initCtx() {
   canvas.value.addEventListener('mouseup', async () => {
     isDrawing.value = false;
     model.value = canvas.value?.toDataURL();
+    const binImage = ctxRef.value?.getImageData(0, 0, props.width, props.height);
+    state.value.push(binImage);
   });
 }
 
@@ -75,9 +78,9 @@ defineExpose({
 </script>
 
 <template>
-  <canvas 
-    ref="myCanvas" 
-    :width="width" 
+  <canvas
+    ref="myCanvas"
+    :width="width"
     :height="height"
     class="rounded-xl border-4 border-[#394DA8]"
   ></canvas>

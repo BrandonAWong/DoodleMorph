@@ -8,6 +8,10 @@ const HEIGHT = 720;
 
 const refMyCanvas = useTemplateRef('myCanvas');
 const base64 = ref('');
+
+const history = ref<(ImageData | undefined)[]>([]);
+const redoHistory = ref<(ImageData | undefined)[]>([]);
+
 const lineWidth = ref(5);
 const imageSrc = ref('');
 const theme = ref('Realistic');
@@ -60,14 +64,52 @@ async function generateImage() {
  * @function clearCanvas
  */
 function clearCanvas() {
-  const context = refMyCanvas.value?.ctxRef;
+  const ctx = refMyCanvas.value?.ctxRef;
 
-  if (!context) return;
+  if (!ctx) {
+    return;
+  }
+
   // Clear the canvas
-  context.clearRect(0, 0, WIDTH, HEIGHT);
+  ctx.clearRect(0, 0, WIDTH, HEIGHT);
   // Fill canvas with white
-  context.fillStyle = 'white';
-  context.fillRect(0, 0, WIDTH, HEIGHT);
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, WIDTH, HEIGHT);
+}
+
+async function undo() {
+  const ctx = refMyCanvas.value?.ctxRef;
+
+  if (!ctx || history.value.length === 0) {
+    return;
+  }
+
+  redoHistory.value.push(history.value.pop());
+
+  const prevState = history.value[history.value.length - 1];
+
+  if (prevState) {
+    ctx.putImageData(prevState, 0, 0);
+  } else {
+    // kinda kinky but its ok
+    clearCanvas();
+    redoHistory.value = [];
+  }
+}
+
+function redo() {
+  const ctx = refMyCanvas.value?.ctxRef;
+
+  if (!ctx || redoHistory.value.length === 0) {
+    return;
+  }
+
+  const nextState = redoHistory.value.pop();
+
+  if (nextState) {
+    history.value.push(nextState);
+    ctx.putImageData(nextState, 0, 0);
+  }
 }
 </script>
 
@@ -171,7 +213,8 @@ function clearCanvas() {
     <div class="flex items-center justify-center">
       <SketchCanvas
         ref="myCanvas"
-        v-model="base64"
+        v-model:image="base64"
+        v-model:state="history"
         class="rounded border-6"
         :width="WIDTH"
         :height="HEIGHT"
@@ -189,8 +232,18 @@ function clearCanvas() {
         >
           clear
         </button>
-        <SmartSvg src="undo-left" class="btn btn-lg" />
-        <SmartSvg src="undo-right" class="btn btn-lg" />
+        <SmartSvg
+          src="undo-left"
+          class="btn btn-lg"
+          :class="{ 'btn-disabled': history.length === 0 }"
+          @click="undo"
+        />
+        <SmartSvg
+          src="undo-right"
+          class="btn btn-lg"
+          :class="{ 'btn-disabled': redoHistory.length === 0 }"
+          @click="redo"
+        />
       </div>
       <div>
         <button
