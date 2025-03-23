@@ -75,5 +75,10 @@ defineExpose({
 </script>
 
 <template>
-  <canvas ref="myCanvas" :width="width" :height="height"></canvas>
+  <canvas 
+    ref="myCanvas" 
+    :width="width" 
+    :height="height"
+    class="rounded-xl border-4 border-[#394DA8]"
+  ></canvas>
 </template>

@@ -83,7 +83,8 @@ function clearCanvas() {
       <div class="flex items-center">
         <SmartSvg src="pencil" class="h-14 w-14 cursor-pointer" />
 
-        <SmartSvg src="eraser" class="h-15 w-15 cursor-pointer" />
+        <SmartSvg src="er
+        aser" class="h-15 w-15 cursor-pointer" />
 
         <SmartSvg src="bucket" class="h-16 w-16 cursor-pointer" />
 

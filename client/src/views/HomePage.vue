@@ -5,7 +5,7 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
 <template>
   <main class="relative">
     <!-- This is for the gallery icon in the top right which links to the gallery page. -->
-    <div class="absolute top-6 right-6">
+    <div class="relative">
       <RouterLink to="/gallery">
         <SmartSvg
           src="gallery"
