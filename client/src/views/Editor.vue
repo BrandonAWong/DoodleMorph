@@ -40,8 +40,6 @@ async function generateImage() {
       }),
     });
 
-    console.log('res', res);
-
     const data = await res.json();
 
     imageSrc.value = data.image;
