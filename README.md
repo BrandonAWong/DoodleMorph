@@ -9,6 +9,10 @@ Draw something cool and watch it morph into something amazing!
 - SQLite
 - Diffusers
 
+## Models
+LCM_Dreamshaper_v7
+Florence-2
+
 ## Tools
 - Figma
 - Git
