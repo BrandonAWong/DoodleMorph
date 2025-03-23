@@ -1,5 +1,33 @@
 <script setup lang="ts">
 import SmartSvg from '@/components/smart/SmartSvg.vue';
+import { inject, ref } from 'vue';
+
+const startOverlay = inject('start-overlay', () => {});
+const stopOverlay = inject('stop-overlay', () => {});
+
+let curPage = 0;
+let images = ref<any[]>([]);
+
+window.onload = async () => {
+  await getImages();
+}
+
+async function getImages() {
+  try {
+    startOverlay();
+
+    const res = await fetch(`http://45.49.181.126:6521/image?limit=5&offset=${curPage++}`, {
+      method: 'GET',
+    });
+
+    const data = await res.json();
+
+    const tImages = data.images;
+    images.value = [...images.value, ...data.images];
+  } finally {
+    stopOverlay();
+  }
+}
 </script>
 
 <template>
