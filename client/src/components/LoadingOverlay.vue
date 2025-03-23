@@ -23,7 +23,7 @@ watch(
 <template>
   <Teleport to="body">
     <SmartTransition name="fade">
-      <div v-if="loading" class="fixed inset-0 z-50 bg-gray-700/[.5] text-center backdrop:blur-sm">
+      <div v-if="loading" class="fixed inset-0 z-50 bg-[#E5E6F3]/[.7] text-center backdrop:blur-sm">
         <LoadingIndicator />
       </div>
     </SmartTransition>
