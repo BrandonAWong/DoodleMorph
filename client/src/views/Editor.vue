@@ -11,6 +11,7 @@ const base64 = ref('');
 const lineWidth = ref(5);
 const imageSrc = ref('');
 const theme = ref('Realistic');
+const color = ref('#000000');
 
 const startOverlay = inject('start-overlay', () => {});
 const stopOverlay = inject('stop-overlay', () => {});
@@ -26,24 +27,26 @@ const stopOverlay = inject('stop-overlay', () => {});
  * `image` property of the response.
  */
 async function generateImage() {
-  startOverlay();
+  try {
+    startOverlay();
 
-  const res = await fetch('http://45.49.181.126:6521/image', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      doodle: base64.value,
-      style: theme.value,
-    }),
-  });
+    const res = await fetch('http://45.49.181.126:6521/image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        doodle: base64.value,
+        style: theme.value,
+      }),
+    });
 
-  console.log('res', res);
+    console.log('res', res);
 
-  const data = await res.json();
+    const data = await res.json();
 
-  imageSrc.value = data.image;
-
-  stopOverlay();
+    imageSrc.value = data.image;
+  } finally {
+    stopOverlay();
+  }
 }
 
 /**
@@ -79,6 +82,7 @@ function clearCanvas() {
         Doodle Morph
       </RouterLink>
     </div>
+
     <div class="mx-auto flex max-w-[1080px] justify-between">
       <div class="flex items-center">
         <SmartSvg src="pencil" class="h-14 w-14 cursor-pointer" />
@@ -102,8 +106,28 @@ function clearCanvas() {
           </ul>
         </div>
 
-        <div>
-          <input type="color" />
+        <div class="ms-3 flex gap-2">
+          <div
+            class="h-10 w-10 cursor-pointer rounded-full border-3 border-[#394DA8] bg-[#000000]"
+            @click="color = '#000000'"
+          />
+          <div
+            class="h-10 w-10 cursor-pointer rounded-full border-3 border-[#394DA8] bg-[#CD1818]"
+            @click="color = '#CD1818'"
+          />
+          <div
+            class="h-10 w-10 cursor-pointer rounded-full border-3 border-[#394DA8] bg-[#18CD36]"
+            @click="color = '#18CD36'"
+          />
+          <div
+            class="h-10 w-10 cursor-pointer rounded-full border-3 border-[#394DA8] bg-[#1876CD]"
+            @click="color = '#1876CD'"
+          />
+          <div
+            class="h-10 w-10 cursor-pointer rounded-full border-3 border-[#394DA8] bg-[#6118CD]"
+            @click="color = '#6118CD'"
+          />
+          <input v-model="color" class="h-10 w-10 cursor-pointer" type="color" />
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -131,7 +155,7 @@ function clearCanvas() {
         class="rounded border-6"
         :width="WIDTH"
         :height="HEIGHT"
-        stroke-style="black"
+        :stroke-style="color"
         :line-width="lineWidth"
       />
     </div>
