@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref, useTemplateRef, watch } from 'vue';
 
-const props = defineProps<{
-  width: number;
-  height: number;
-  strokeStyle: string;
-  lineWidth: number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    width: number;
+    height: number;
+    strokeStyle: string;
+    lineWidth: number;
+    freeze?: boolean;
+  }>(),
+  {
+    freeze: false,
+  },
+);
 
 const emit = defineEmits(['click']);
 
@@ -36,6 +42,10 @@ function initCtx() {
   ctxRef.value.fillRect(0, 0, props.width, props.height);
 
   canvas.value.addEventListener('mousedown', (e) => {
+    if (props.freeze) {
+      return;
+    }
+
     isDrawing.value = true;
 
     ctxRef.value?.beginPath();

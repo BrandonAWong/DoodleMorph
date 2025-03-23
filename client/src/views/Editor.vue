@@ -33,6 +33,10 @@ const strokeStyle = computed(() => {
   return color.value;
 });
 
+const freezeOnBucket = computed(() => {
+  return mode.value === 'Bucket';
+});
+
 onMounted(() => {
   const audio = bgMusic.value;
   if (audio) {
@@ -288,6 +292,7 @@ function handleCanvasClick(x: number, y: number) {
         :height="HEIGHT"
         :stroke-style="strokeStyle"
         :line-width="lineWidth"
+        :freeze="freezeOnBucket"
         @click="handleCanvasClick"
       />
     </div>
