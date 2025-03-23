@@ -323,7 +323,6 @@ function handleCanvasClick(x: number, y: number) {
       <img :src="imageSrc" />
     </div>
   </main>
-<<<<<<< Updated upstream
 </template>
 
 <style>
@@ -331,6 +330,3 @@ a {
   word-spacing: -40px;
 }
 </style>
-=======
-</template>
->>>>>>> Stashed changes
