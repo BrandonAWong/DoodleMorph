@@ -14,6 +14,7 @@ const props = defineProps({
 const derivedComponent = computed(() => {
   try {
     const component = SVGS[`/src/assets/svgs/${props.src}.svg`]();
+    // @ts-expect-error
     return defineAsyncComponent(() => component);
   } catch {
     log(`Error: svg ${props.src} not found.`);
