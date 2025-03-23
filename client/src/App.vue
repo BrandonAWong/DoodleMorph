@@ -10,7 +10,7 @@ provide('stop-overlay', () => (isLoading.value = false));
 </script>
 
 <template>
-  <LoadingOverlay :loading="true" />
+  <LoadingOverlay :loading="isLoading" />
   <RouterView v-slot="{ Component }" class="router-view">
     <SmartTransition name="fade-up" mode="out-in">
       <component :is="Component" />
