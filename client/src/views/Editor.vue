@@ -141,7 +141,7 @@ function handleCanvasClick(x: number, y: number) {
 
 <template>
   <main
-    class="font-notebook bg-[#ffffff] bg-cover py-10 text-3xl"
+    class="font-notebook bg-[#E5E6F3] bg-cover py-10 text-3xl"
     :style="{ backgroundImage: 'url(/images/background.png)' }"
   >
     <div class="pb-20 text-center">
