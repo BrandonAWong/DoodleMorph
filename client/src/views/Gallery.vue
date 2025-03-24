@@ -21,9 +21,12 @@ async function getImages() {
   try {
     startOverlay();
 
-    const res = await fetch(`http://45.49.181.126:6521/image?limit=5&offset=${curPage.value * 5}`, {
-      method: 'GET',
-    });
+    const res = await fetch(
+      `https://dm.devlos-labs.com/image?limit=5&offset=${curPage.value * 5}`,
+      {
+        method: 'GET',
+      },
+    );
 
     const data = await res.json();
 

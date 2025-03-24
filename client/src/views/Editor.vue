@@ -92,7 +92,7 @@ async function generateImage() {
 
     const latestBase64 = refMyCanvas.value?.canvas?.toDataURL();
 
-    const res = await fetch('http://45.49.181.126:6521/image', {
+    const res = await fetch('https://dm.devlos-labs.com/image', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
