@@ -37,7 +37,7 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
         <div
           class="relative top-5 left-3 h-[118px] w-[367px] rounded-[18px] border-5 border-[#394DA8] bg-white text-left"
         >
-          <p class="ml-3">poopy muncher</p>
+          <p class="ml-3">Backend Developer</p>
         </div>
       </div>
 
@@ -53,7 +53,7 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
         <div
           class="relative top-5 left-3 h-[118px] w-[367px] rounded-[18px] border-5 border-[#394DA8] bg-white text-left"
         >
-          <p class="ml-3">discord mod</p>
+          <p class="ml-3">Developer, VP</p>
         </div>
       </div>
     </div>
@@ -73,7 +73,7 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
         <div
           class="relative top-5 left-3 h-[118px] w-[367px] rounded-[18px] border-5 border-[#394DA8] bg-white text-left"
         >
-          <p class="ml-3">butt booty naked men enjoyer</p>
+          <p class="ml-3">Creative Artist</p>
         </div>
       </div>
 
@@ -89,7 +89,7 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
         <div
           class="relative top-5 left-3 h-[118px] w-[367px] rounded-[18px] border-5 border-[#394DA8] bg-white text-left"
         >
-          <p class="ml-3">diversity hire</p>
+          <p class="ml-3">Diversity Hire (Frontend Developer)</p>
         </div>
       </div>
     </div>
