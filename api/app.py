@@ -28,11 +28,13 @@ login(token=getenv("TOKEN"))
 
 queue_lock = Lock()
 
+
 @app.route("/image", methods=["POST"])
 def generate_image():
     data = request.get_json()
     doodle_base64 = data.get("doodle")
-    doodle = BytesIO(base64.b64decode(doodle_base64.replace("data:image/png;base64,", "")))
+    doodle = BytesIO(base64.b64decode(
+        doodle_base64.replace("data:image/png;base64,", "")))
     style = data.get("style")
 
     with queue_lock:
@@ -56,7 +58,8 @@ def generate_image():
         init_img = PIL.Image.open(doodle).convert("RGB")
         init_img = init_img.resize((768, 512))  # Adjust size as needed
 
-        pipe = StableDiffusionImg2ImgPipeline.from_pretrained("SimianLuo/LCM_Dreamshaper_v7", torch_dtype=torch.float32)
+        pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
+            "SimianLuo/LCM_Dreamshaper_v7", torch_dtype=torch.float32)
         pipe = pipe.to("cuda")
         pipe.safety_checker = None
 
@@ -74,11 +77,13 @@ def generate_image():
         img_bytes = buffered.getvalue()
         generated = "data:image/png;base64," + base64.b64encode(img_bytes).decode('utf-8')
 
-        new_image = Image(doodle=doodle_base64, generated=generated, creationdate=datetime.now())
+        new_image = Image(doodle=doodle_base64, generated=generated,
+                          creationdate=datetime.now())
         db.session.add(new_image)
         db.session.commit()
         print(prompt)
         return jsonify({"image": generated})
+
 
 def describe_image(image_path):
     model_id = "microsoft/Florence-2-base"
@@ -88,7 +93,8 @@ def describe_image(image_path):
     model = model.to("cuda")
     processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
     image = PIL.Image.open(image_path).convert("RGB")
-    inputs = processor(text=prompt, images=image, return_tensors="pt").to("cuda", torch.float32)
+    inputs = processor(text=prompt, images=image,
+                       return_tensors="pt").to("cuda", torch.float32)
 
     generated_ids = model.generate(
         input_ids=inputs["input_ids"],
@@ -99,7 +105,8 @@ def describe_image(image_path):
     )
 
     generated_text = processor.batch_decode(generated_ids, skip_special_tokens=False)[0]
-    parsed_answer = processor.post_process_generation(generated_text, task=prompt, image_size=(image.width, image.height))
+    parsed_answer = processor.post_process_generation(
+        generated_text, task=prompt, image_size=(image.width, image.height))
     torch.cuda.empty_cache()
     return parsed_answer[prompt].lower()\
         .replace("drawing", "picture")\
@@ -109,18 +116,20 @@ def describe_image(image_path):
         .replace("draw", "")\
         .replace(".", "")
 
+
 @app.route("/image", methods=["GET"])
 def get_gallery_images():
-    offset = request.args.get('offset',0,type=int)
-    limit = request.args.get('limit',5,type=int)
-    images = Image.query.order_by(desc(Image.creationdate)).offset(offset).limit(limit).all()
+    offset = request.args.get('offset', 0, type=int)
+    limit = request.args.get('limit', 5, type=int)
+    images = Image.query.order_by(desc(Image.creationdate)
+                                  ).offset(offset).limit(limit).all()
     images_list = []
     for image in images:
-        info = {"id": image.id, "doodle":image.doodle, "generated":image.generated, "creationdate":image.creationdate}
+        info = {"id": image.id, "doodle": image.doodle,
+                "generated": image.generated, "creationdate": image.creationdate}
         images_list.append(info)
     return jsonify({"images": images_list})
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=6521)
-
+    app.run(host="0.0.0.0", port=8080)
