@@ -8,3 +8,5 @@ Pillow
 transformers
 huggingface_hub
 python-dotenv
+einops
+timm
