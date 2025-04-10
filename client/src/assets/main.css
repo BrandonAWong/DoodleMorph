@@ -58,3 +58,9 @@
   line-height: 100%;
   letter-spacing: 7%;
 }
+
+body {
+  background-image: url('/images/background.png');
+  background-color: #e5e6f3;
+  background-repeat: repeat;
+}

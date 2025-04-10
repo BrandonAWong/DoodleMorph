@@ -3,10 +3,7 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
 </script>
 
 <template>
-  <main
-    class="bg-[#E5E6F3] bg-cover bg-center pb-14"
-    :style="{ backgroundImage: 'url(/images/background.png)' }"
-  >
+  <main class="bg-cover bg-center pb-14">
     <div class="absolute top-6 left-6 z-10">
       <RouterLink to="/">
         <SmartSvg

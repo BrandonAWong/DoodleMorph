@@ -52,10 +52,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <main
-    class="font-notebook relative min-h-screen bg-[#E5E6F3] bg-center py-10 text-3xl font-black"
-    :style="{ backgroundImage: 'url(/images/background.png)', backgroundRepeat: 'repeat' }"
-  >
+  <main class="font-notebook relative min-h-screen bg-center py-10 text-3xl font-black">
     <!-- This is for the gallery icon in the top right which links to the gallery page. -->
     <div class="absolute top-6 left-6 z-10">
       <RouterLink to="/">

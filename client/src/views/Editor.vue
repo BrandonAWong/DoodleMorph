@@ -188,10 +188,24 @@ function handleCanvasClick(x: number, y: number) {
 </script>
 
 <template>
-  <main
-    class="font-notebook bg-[#E5E6F3] bg-cover py-10 text-3xl font-black"
-    :style="{ backgroundImage: 'url(/images/background.png)' }"
-  >
+  <main class="font-notebook bg-cover py-10 text-3xl font-black">
+    <div role="alert" class="alert alert-info fixed top-3 right-3 z-10 text-lg">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        class="h-6 w-6 shrink-0 stroke-current"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        ></path>
+      </svg>
+      <span>To reduce costs, image generation may take up to 5 minutes.</span>
+    </div>
+
     <audio ref="bgMusic" src="/audio/theme.mp3" preload="auto" loop></audio>
 
     <div class="pb-20 text-center">

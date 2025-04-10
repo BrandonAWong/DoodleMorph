@@ -17,18 +17,17 @@ import SmartSvg from '@/components/smart/SmartSvg.vue';
       <RouterLink to="/team">
         <SmartSvg
           src="info"
-          class=" shrink-0 opacity-100 transition duration-200 hover:opacity-80"
+          class="shrink-0 opacity-100 transition duration-200 hover:opacity-80"
         />
       </RouterLink>
     </div>
 
     <!-- This is for the home page title -->
-    <div
-      class="flex h-screen flex-col items-center justify-center bg-[#E5E6F3] bg-cover bg-center"
-      :style="{ backgroundImage: 'url(/images/background.png)' }"
-    >
+    <div class="flex h-screen flex-col items-center justify-center bg-cover bg-center">
       <div class="flex -translate-y-30 transform text-9xl">
-        <div class="font-rock h-[404px] w-[703px] shrink-0 pt-35 font-bold text-[#394DA8] text-center">
+        <div
+          class="font-rock h-[404px] w-[703px] shrink-0 pt-35 text-center font-bold text-[#394DA8]"
+        >
           Doodle Morph
         </div>
       </div>
