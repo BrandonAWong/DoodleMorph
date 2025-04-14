@@ -2,6 +2,7 @@
 import { floodFill, hexToRGBA } from '@/assets/utility/bucket';
 import SketchCanvas from '@/components/SketchCanvas.vue';
 import SmartSvg from '@/components/smart/SmartSvg.vue';
+import SmartTransition from '@/components/smart/SmartTransition.vue';
 import { computed, inject, ref, useTemplateRef, onMounted } from 'vue';
 
 const bgMusic = ref<HTMLAudioElement | null>(null);
@@ -22,6 +23,7 @@ const theme = ref('Realistic');
 const color = ref('#000000');
 const mode = ref('Draw');
 
+const showAlert = ref(false);
 const startOverlay = inject('start-overlay', () => {});
 const stopOverlay = inject('stop-overlay', () => {});
 
@@ -87,26 +89,29 @@ function stopMusic() {
  * `image` property of the response.
  */
 async function generateImage() {
-  try {
-    startOverlay();
+  startOverlay();
 
-    const latestBase64 = refMyCanvas.value?.canvas?.toDataURL();
+  const latestBase64 = refMyCanvas.value?.canvas?.toDataURL();
 
-    const res = await fetch('https://dm.devlos-labs.com/image', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        doodle: latestBase64,
-        style: theme.value,
-      }),
-    });
+  const controller = new AbortController();
 
-    const data = await res.json();
+  fetch('https://dm.devlos-labs.com/image', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    signal: controller.signal,
+    body: JSON.stringify({
+      doodle: latestBase64,
+      style: theme.value,
+    }),
+  });
 
-    imageSrc.value = data.image;
-  } finally {
+  setTimeout(() => {
+    controller.abort();
     stopOverlay();
-  }
+    showAlert.value = true;
+
+    setTimeout(() => (showAlert.value = false), 3000);
+  }, 800);
 }
 
 /**
@@ -189,22 +194,24 @@ function handleCanvasClick(x: number, y: number) {
 
 <template>
   <main class="font-notebook bg-cover py-10 text-3xl font-black">
-    <div role="alert" class="alert alert-info fixed top-3 right-3 z-10 text-lg">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        class="h-6 w-6 shrink-0 stroke-current"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        ></path>
-      </svg>
-      <span>To reduce costs, image generation may take up to 5 minutes.</span>
-    </div>
+    <SmartTransition name="slide-from-right">
+      <div v-if="showAlert" role="alert" class="alert alert-info fixed top-3 right-3 z-10 text-lg">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          class="h-6 w-6 shrink-0 stroke-current"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+        <span>To reduce costs, image generation may take up to 5 minutes.</span>
+      </div>
+    </SmartTransition>
 
     <audio ref="bgMusic" src="/audio/theme.mp3" preload="auto" loop></audio>
 

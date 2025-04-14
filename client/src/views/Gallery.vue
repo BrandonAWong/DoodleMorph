@@ -30,8 +30,6 @@ async function getImages() {
 
     const data = await res.json();
 
-    console.log(data);
-
     images.value = data.images;
 
     refGallery.value?.scrollIntoView({
