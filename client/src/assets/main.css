@@ -59,10 +59,11 @@
   letter-spacing: 7%;
 }
 
-body {
+html {
   background-image: url('/images/background.png');
   background-color: #e5e6f3;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
+  overscroll-behavior: none; /* Prevent scroll bounce */
 }
